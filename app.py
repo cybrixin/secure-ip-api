@@ -112,6 +112,7 @@ def get_json(ip: str = None):
 
     if not match_reg:
         response = make_response("<h1 style=\"margin:0;margin-bottom: 1rem;\">Internal Server Error!!</h1><p>The server encountered an internal server error while fetching your request.</p>")
+        response.headers['Access-Control-Allow-Origin'] = '*'
         response.headers['Content-Type'] = 'text/html'
         return response, 400
 
@@ -122,6 +123,7 @@ def get_json(ip: str = None):
         if a not in GET_PARAM.keys():
             response = make_response("<h1 style=\"margin:0;margin-bottom: 1rem;\">Bad Request!!</h1><code>{}</code> "
                                      "is not a valid query.".format(a))
+            response.headers['Access-Control-Allow-Origin'] = '*'
             response.headers['Content-Type'] = 'text/html'
             return response, 400
         else:
@@ -138,6 +140,7 @@ def get_json(ip: str = None):
                         response = make_response(
                             "<h1 style=\"margin:0;margin-bottom: 1rem;\">Bad Request!!</h1><code>{} = {}</code> "
                             "is not valid".format(a, q))
+                        response.headers['Access-Control-Allow-Origin'] = '*'
                         response.headers['Content-Type'] = 'text/html'
                         return response, 400
 
@@ -167,7 +170,8 @@ def get_json(ip: str = None):
         for header_name in MANDATORY_RESPONSE_HEADERS:
             if header_name in response_from_request.headers:
                 response.headers[header_name] = response_from_request.headers[header_name]
-
+    
+    response.headers['Access-Control-Allow-Origin'] = '*'
     return response, status_code
 
 
